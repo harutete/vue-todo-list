@@ -12,7 +12,11 @@
       </div>
     </div>
     <ul class="list-todo">
-      <li v-for="(todo, index) in todoList.value" :key="`todo_${index}`">
+      <li
+        v-for="(todo, index) in todoList"
+        :ref="todoList"
+        :key="`todo_${index}`"
+      >
         {{ todo }}
       </li>
     </ul>
@@ -20,16 +24,17 @@
 </template>
 
 <script lang="ts">
-import { ref, defineComponent } from 'vue';
-import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
+import { ref, onBeforeUpdate, onUpdated, defineComponent } from 'vue';
+import HelloWorld from '@/components/HelloWorld.vue';
 
 export default defineComponent({
-  name: 'Home',
+  name: 'TodoApp',
   setup() {
     const todoList = ref<string[]>([]);
     const todoText = ref('');
     const addTodoTask = () => {
       todoList.value.push(todoText.value.toString());
+      todoText.value = '';
     };
     return {
       todoList,
