@@ -11,13 +11,20 @@
         </button>
       </div>
     </div>
-    <ul class="list-todo">
+    <ul class="list-todo" v-if="todoList.length">
       <li
         v-for="(todo, index) in todoList"
         :ref="todoList"
         :key="`todo_${index}`"
       >
-        {{ todo }}
+        <p>{{ todo }}</p>
+        <button
+          type="button"
+          @click="removeTodoTask(index)"
+          class="button-remove-todo"
+        >
+          Remove
+        </button>
       </li>
     </ul>
   </div>
@@ -36,10 +43,14 @@ export default defineComponent({
       todoList.value.push(todoText.value.toString());
       todoText.value = '';
     };
+    const removeTodoTask = (index: number) => {
+      todoList.value.splice(index, 1);
+    };
     return {
       todoList,
       todoText,
-      addTodoTask
+      addTodoTask,
+      removeTodoTask
     };
   }
 });
@@ -78,9 +89,26 @@ body {
   color: #ffffff;
   padding: 10px 15px;
 }
+.button-remove-todo {
+  cursor: pointer;
+  background: #cccccc;
+  border: none;
+  border-radius: 4px;
+  color: #ffffff;
+  font-size: 12px;
+  padding: 5px 10px;
+}
 .list-todo {
+  list-style: none;
   li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-top: 10px;
+    margin-right: -10px;
+    & * {
+      margin-right: 10px;
+    }
   }
 }
 </style>
